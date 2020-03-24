@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smart.future.dao.role.IRoleDao">
+
+    <select id="findRoleByCode" resultType="com.smart.future.user.vo.RoleVO">
+        select * from s_role_t r where r.available = 1 and r.code = #{code}
+    </select>
+
+</mapper>
