@@ -1,4 +1,4 @@
-package com.smart.future.controller;
+package com.smart.future.health.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

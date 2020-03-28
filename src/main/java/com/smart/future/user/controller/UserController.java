@@ -4,7 +4,7 @@ import com.smart.future.common.constant.SmartCode;
 import com.smart.future.common.exception.ApplicationException;
 import com.smart.future.user.service.IUserService;
 import com.smart.future.user.vo.UserVO;
-import com.smart.future.vo.ResponseVO;
+import com.smart.future.common.vo.ResponseVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

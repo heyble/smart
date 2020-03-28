@@ -4,7 +4,7 @@ import com.smart.future.common.exception.SmartApplicationException;
 import com.smart.future.common.util.JsonUtil;
 import com.smart.future.login.util.TokenUtil;
 import com.smart.future.user.vo.UserVO;
-import com.smart.future.vo.ResponseVO;
+import com.smart.future.common.vo.ResponseVO;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
