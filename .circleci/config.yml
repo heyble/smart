@@ -1,0 +1,25 @@
+version: 2.1
+
+orbs:
+  maven: circleci/maven@0.0.12
+
+workflows:
+  maven_test:
+    jobs:
+      build:
+        working_directory: ~/circleci-project-setup
+      docker:
+        - image: circleci/openjdk:8-jdk-stretch
+      steps:
+        - checkout
+        - restore_cache:
+            key: circleci-project-setup-{{ checksum "pom.xml" }}
+        - save_cache:
+            paths:
+              - ~/.m2
+            key: circleci-project-setup-{{ checksum "pom.xml" }}
+        - run: mvn package
+        - store_test_results:
+            path: target/surefire-reports
+        - store_artifacts:
+            path: target/future-0.0.1-SNAPSHOT
