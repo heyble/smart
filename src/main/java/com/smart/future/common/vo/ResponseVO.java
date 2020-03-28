@@ -1,4 +1,4 @@
-package com.smart.future.vo;
+package com.smart.future.common.vo;
 
 public class ResponseVO<T> {
     Integer status;

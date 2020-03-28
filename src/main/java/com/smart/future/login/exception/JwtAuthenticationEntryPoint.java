@@ -2,7 +2,7 @@ package com.smart.future.login.exception;
 
 import com.smart.future.common.constant.SmartCode;
 import com.smart.future.common.util.JsonUtil;
-import com.smart.future.vo.ResponseVO;
+import com.smart.future.common.vo.ResponseVO;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
