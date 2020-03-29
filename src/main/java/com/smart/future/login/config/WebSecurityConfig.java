@@ -27,10 +27,12 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // 放行路径
-        String[] permitAllMatchers = new String[]{"/", "/css/**", "/js/**", "/img/**", "/user/register"};
+        String[] permitAllMatchers = new String[]{"/css/**", "/js/**", "/img/**", "/user/register", "/storage/**", "/*"};
 
-        http.authorizeRequests()
-                // 所有 /login 的POST请求 都放行
+        http.cors() // 开启跨域支持
+                .and()
+                .authorizeRequests()
+                // 放行请求
                 .antMatchers(permitAllMatchers).permitAll()
                 .antMatchers("/user/findAll").hasAnyRole(RoleCode.ROOT.getCode(),RoleCode.ADMINISTRATOR.getCode())
                 .antMatchers("/user/**").hasAnyRole(RoleCode.getAllCode())
