@@ -14,4 +14,6 @@ public interface IUserService {
     UserVO updateUser(UserVO userVO);
 
     UserVO findUserByPhoneId(Long phoneId);
+
+    UserVO currentUser() throws ApplicationException;
 }

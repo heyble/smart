@@ -11,6 +11,7 @@ import com.smart.future.user.service.IUserService;
 import com.smart.future.user.vo.RoleVO;
 import com.smart.future.user.vo.UserVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -84,6 +85,9 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public UserVO updateUser(UserVO userVO) {
+        final Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        userVO.setLastUpdatedBy(Long.valueOf(principal.toString()));
+        userVO.setLastUpdatedDate(new Date());
         userDao.updateUser(userVO);
         UserVO user = userDao.findById(userVO.getId());
         return user;
@@ -91,6 +95,13 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public UserVO findUserByPhoneId(Long phoneId) {
+        return userDao.findByPhoneId(phoneId);
+    }
+
+    @Override
+    public UserVO currentUser() {
+        final Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        final Long phoneId = Long.valueOf(principal.toString());
         return userDao.findByPhoneId(phoneId);
     }
 }
