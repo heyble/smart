@@ -8,6 +8,7 @@ import com.smart.future.common.vo.ResponseVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -27,6 +28,16 @@ public class UserController {
             ResponseVO.error(SmartCode.UserError.EMPTY_PARAM, e.getMessage());
         }
         return ResponseVO.ok();
+    }
+
+    @RequestMapping(value = "/current", method = RequestMethod.GET)
+    public ResponseVO<?> currentUser(){
+        try {
+            UserVO currentUser = userService.currentUser();
+            return ResponseVO.okWithData(currentUser);
+        } catch (ApplicationException e) {
+            return ResponseVO.error(SmartCode.UserError.EMPTY_PARAM, e.getMessage());
+        }
     }
 
     @RequestMapping("/update")

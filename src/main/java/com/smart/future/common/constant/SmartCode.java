@@ -6,6 +6,7 @@ public interface SmartCode {
 
     interface LoginError{
         Integer AUTH_ERROR = 1000;
+        Integer AUTH_EXPIRE = 9999;
     }
 
     interface UserError{

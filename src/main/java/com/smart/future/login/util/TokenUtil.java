@@ -1,7 +1,6 @@
 package com.smart.future.login.util;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -37,7 +36,7 @@ public class TokenUtil {
     }
 
     // JWT验证方法
-    public static Authentication getAuthentication(String token) throws JwtException {
+    public static Authentication getAuthentication(String token) {
         if (token != null) {
             // 解析 Token
             Claims claims = Jwts.parser()
@@ -46,6 +45,11 @@ public class TokenUtil {
                     // 去掉 Bearer
                     .parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
                     .getBody();
+
+            // if (claims.getExpiration().getTime() >= System.currentTimeMillis()) {
+            //     throw new JWTAuthenticationExpiredException(SmartCode.LoginError.AUTH_EXPIRE, "身份认证已过期");
+            // }
+
 
             // 拿用户名
             String user = claims.getSubject();
