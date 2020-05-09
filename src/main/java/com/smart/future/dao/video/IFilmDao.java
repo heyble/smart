@@ -13,4 +13,6 @@ public interface IFilmDao {
     void create(@Param("filmVO") FilmVO filmVO);
 
     FilmVO queryById(@Param("id") Long id);
+
+    void update(@Param("filmVO") FilmVO filmVO);
 }

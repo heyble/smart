@@ -81,6 +81,27 @@
           ) ;
     </insert>
 
+    <update id="update">
+        UPDATE
+          smart_film_t t
+        SET
+          t.NAME = #{filmVO.name},
+          t.description = #{filmVO.description},
+          t.cover = #{filmVO.cover},
+          t.starring = #{filmVO.starring},
+          t.director = #{filmVO.director},
+          t.release_time = #{filmVO.releaseTime},
+          t.country = #{filmVO.country},
+          t.LANGUAGE = #{filmVO.language},
+          t.LENGTH = #{filmVO.length},
+          t.file_id = #{filmVO.fileId},
+          t.tag = #{filmVO.tag},
+          t.available = #{filmVO.available},
+          t.last_updated_by = #{filmVO.lastUpdatedBy},
+          t.last_updated_date = #{filmVO.lastUpdatedDate}
+        WHERE t.`id` = #{filmVO.id};
+    </update>
+
     <select id="query" resultType="com.smart.future.video.vo.FilmVO">
         SELECT * FROM smart_film_t t ORDER BY t.`last_updated_date` DESC LIMIT #{startRow},#{size};
     </select>

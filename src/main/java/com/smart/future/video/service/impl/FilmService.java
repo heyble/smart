@@ -44,4 +44,10 @@ public class FilmService implements IFilmService {
 
         return filmDao.queryById(id);
     }
+
+    @Override
+    public void update(FilmVO filmVO) {
+        filmVO.setLastUpdatedDate(new Date());
+        filmDao.update(filmVO);
+    }
 }
