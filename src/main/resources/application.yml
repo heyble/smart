@@ -13,9 +13,12 @@ spring:
       location: d:\tmp
       max-file-size: 1049610000
       max-request-size: 1049610000
+#  resources:
+#    static-locations: classpath:static/,file:static/
 upload:
   temp-path: D:\upload\temp
   real-path: D:\upload\real
+
 
 # mybatis
 mybatis:

@@ -86,8 +86,8 @@
           t.`avatar` = #{userVO.avatar},
           t.`e_mail` = #{userVO.eMail},
           t.`birthday` = #{userVO.birthday},
-          t.`available` = #{userVO.available}
-          t.`last_updated_by` = #{userVO.lastUpdatedBy}
+          t.`available` = #{userVO.available},
+          t.`last_updated_by` = #{userVO.lastUpdatedBy},
           t.`last_updated_date` = #{userVO.lastUpdatedDate}
         WHERE t.`id` = #{userVO.id}
     </update>
