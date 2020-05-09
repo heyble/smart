@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smart.future.dao.file.IFileDao">
+    <insert id="createFile" keyProperty="fileVO.id" keyColumn="id" useGeneratedKeys="true">
+        INSERT INTO smart_file_t (
+            NAME,
+            path,
+            suffix_name,
+            hash_code,
+            resource_code,
+            OWNER,
+            size,
+            available,
+            created_by,
+            creation_date,
+            last_updated_by,
+            last_updated_date
+            )
+            VALUES
+              (
+                #{fileVO.name},
+                #{fileVO.path},
+                #{fileVO.suffixName},
+                #{fileVO.hashCode},
+                #{fileVO.resourceCode},
+                #{fileVO.owner},
+                #{fileVO.size},
+                #{fileVO.available},
+                #{fileVO.createdBy},
+                #{fileVO.creationDate},
+                #{fileVO.lastUpdatedBy},
+                #{fileVO.lastUpdatedDate}
+              );
+    </insert>
+
+
+    <select id="queryByHashCode" resultType="com.smart.future.storage.vo.FileVO">
+        select * from smart_file_t t where t.hash_code = #{hashCode}
+    </select>
+</mapper>

@@ -41,9 +41,14 @@ public class UserController {
     }
 
     @RequestMapping("/update")
-    public ResponseVO<UserVO> updateUser(UserVO userVO){
-        UserVO user = userService.updateUser(userVO);
-        return ResponseVO.okWithData(user);
+    public ResponseVO<?> updateUser(@RequestBody UserVO userVO){
+        UserVO user = null;
+        try {
+            user = userService.updateUser(userVO);
+            return ResponseVO.okWithData(user);
+        } catch (ApplicationException e) {
+            return ResponseVO.error(e.getCode(), e.getMessage());
+        }
     }
 
     @RequestMapping("/findAll")

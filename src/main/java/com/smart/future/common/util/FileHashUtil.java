@@ -1,5 +1,8 @@
 package com.smart.future.common.util;
 
+import com.smart.future.common.constant.SmartCode;
+import com.smart.future.common.exception.SmartApplicationException;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -7,7 +10,37 @@ import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class FileMD5Util {
+public class FileHashUtil {
+
+    /**
+     * 获取该输入流的SHA25值
+     *
+     * @param is
+     * @return
+     * @throws NoSuchAlgorithmException
+     * @throws IOException
+     */
+    public static String getSHA256(InputStream is) throws SmartApplicationException {
+        try (InputStream inputStream = is) {
+            StringBuffer md5 = new StringBuffer();
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            byte[] dataBytes = new byte[4096];
+
+            int ch = 0;
+            while ((ch = inputStream.read(dataBytes)) != -1) {
+                md.update(dataBytes, 0, ch);
+            }
+            byte[] bytes = md.digest();
+
+            // convert the byte to hex format
+            for (int i = 0; i < bytes.length; i++) {
+                md5.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+            }
+            return md5.toString();
+        } catch (NoSuchAlgorithmException | IOException e) {
+            throw new SmartApplicationException(SmartCode.CommonError.HASH_ERROR,e.getMessage());
+        }
+    }
 
     /**
      * 获取该输入流的MD5值

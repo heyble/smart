@@ -7,6 +7,7 @@ import com.smart.future.common.vo.ResponseVO;
 import com.smart.future.storage.service.IStorageService;
 import com.smart.future.storage.util.StorageUtil;
 import com.smart.future.storage.vo.ChunkVO;
+import com.smart.future.storage.vo.FileVO;
 import org.apache.catalina.connector.ClientAbortException;
 import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,6 +33,17 @@ public class StorageController {
 
     @Autowired
     private IStorageService storageService;
+
+    @RequestMapping(value = "/upload",method = RequestMethod.POST)
+    public ResponseVO<?> upload(MultipartFile file){
+        try {
+            // int i = 1/0;
+            FileVO fileVO = storageService.upload(file);
+            return ResponseVO.okWithData(fileVO);
+        } catch (SmartApplicationException e) {
+            return ResponseVO.error(e.getCode(), e.getMessage());
+        }
+    }
 
     @RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
     public ResponseVO<?> uploadFile(HttpServletRequest request, ChunkVO chunk) throws ApplicationException {

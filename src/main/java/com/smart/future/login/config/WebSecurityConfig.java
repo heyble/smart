@@ -27,7 +27,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // 放行路径
-        String[] permitAllMatchers = new String[]{"/css/**", "/js/**", "/img/**", "/user/register", "/storage/**", "/*"};
+        String[] permitAllMatchers = new String[]{"/css/**", "/js/**", "/image/**", "/video/**", "/user/register", "/storage/**", "/*"};
 
         http.cors() // 开启跨域支持
                 .and()

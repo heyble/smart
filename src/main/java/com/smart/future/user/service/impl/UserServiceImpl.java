@@ -84,9 +84,13 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public UserVO updateUser(UserVO userVO) {
+    public UserVO updateUser(UserVO userVO) throws ApplicationException {
         final Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        userVO.setLastUpdatedBy(Long.valueOf(principal.toString()));
+        final Long currentUserPhoneId = Long.valueOf(principal.toString());
+        if (!currentUserPhoneId.equals(userVO.getPhoneId())) {
+            throw new SmartApplicationException(SmartCode.UserError.ERROR_PARAM, "更新失败，非法操作");
+        }
+        userVO.setLastUpdatedBy(currentUserPhoneId);
         userVO.setLastUpdatedDate(new Date());
         userDao.updateUser(userVO);
         UserVO user = userDao.findById(userVO.getId());

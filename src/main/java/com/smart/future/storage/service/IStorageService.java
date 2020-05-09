@@ -1,7 +1,10 @@
 package com.smart.future.storage.service;
 
 import com.smart.future.common.exception.ApplicationException;
+import com.smart.future.common.exception.SmartApplicationException;
 import com.smart.future.storage.vo.ChunkVO;
+import com.smart.future.storage.vo.FileVO;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 
@@ -12,4 +15,6 @@ public interface IStorageService {
     void mergeFile4Temp(String filename, String guid) throws ApplicationException;
 
     File loadFile(String filePath) throws ApplicationException;
+
+    FileVO upload(MultipartFile multipartFile) throws SmartApplicationException;
 }

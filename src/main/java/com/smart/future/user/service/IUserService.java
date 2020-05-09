@@ -11,7 +11,7 @@ public interface IUserService {
 
     List<UserVO> findAll();
 
-    UserVO updateUser(UserVO userVO);
+    UserVO updateUser(UserVO userVO) throws ApplicationException;
 
     UserVO findUserByPhoneId(Long phoneId);
 

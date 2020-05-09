@@ -3,6 +3,10 @@ package com.smart.future.common.constant;
 public interface SmartCode {
     Integer OK = 200;
 
+    interface CommonError {
+        Integer HASH_ERROR = 0001;
+    }
+
 
     interface LoginError{
         Integer AUTH_ERROR = 1000;
