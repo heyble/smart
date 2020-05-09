@@ -30,6 +30,12 @@ public class FilmController {
         return ResponseVO.ok();
     }
 
+    @RequestMapping("/update")
+    public ResponseVO<?> update(@RequestBody FilmVO filmVO){
+        filmService.update(filmVO);
+        return ResponseVO.ok();
+    }
+
     @RequestMapping("/{id}")
     public ResponseVO<?> query(@PathVariable Long id){
         FilmVO filmVO = filmService.queryById(id);

@@ -10,4 +10,6 @@ public interface IFilmService {
     void create(FilmVO filmVO);
 
     FilmVO queryById(Long id);
+
+    void update(FilmVO filmVO);
 }
