@@ -12,7 +12,7 @@ public interface IStorageService {
 
     void uploadFile2Temp(ChunkVO chunk) throws ApplicationException;
 
-    void mergeFile4Temp(String filename, String guid) throws ApplicationException;
+    FileVO mergeFile4Temp(ChunkVO chunk) throws ApplicationException;
 
     File loadFile(String filePath) throws ApplicationException;
 

@@ -10,7 +10,7 @@ public class FileVO {
     private String hashCode;
     private String resourceCode;
     private Long owner;
-    private Integer size;
+    private Long size;
     private Integer available;
     private Long createdBy;
     private Date creationDate;
@@ -49,11 +49,11 @@ public class FileVO {
         this.owner = owner;
     }
 
-    public Integer getSize() {
+    public Long getSize() {
         return size;
     }
 
-    public void setSize(Integer size) {
+    public void setSize(Long size) {
         this.size = size;
     }
 
