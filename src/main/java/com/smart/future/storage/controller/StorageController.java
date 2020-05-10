@@ -37,7 +37,6 @@ public class StorageController {
     @RequestMapping(value = "/upload",method = RequestMethod.POST)
     public ResponseVO<?> upload(MultipartFile file){
         try {
-            // int i = 1/0;
             FileVO fileVO = storageService.upload(file);
             return ResponseVO.okWithData(fileVO);
         } catch (SmartApplicationException e) {
@@ -56,10 +55,9 @@ public class StorageController {
         // TODO 全局异常处理
     }
 
-    @RequestMapping(value = "/mergeFile", method = RequestMethod.GET)
-    public ResponseVO<?> mergeFile(String filename, String guid) throws ApplicationException {
-        storageService.mergeFile4Temp(filename, guid);
-        return ResponseVO.ok();
+    @RequestMapping(value = "/mergeFile", method = RequestMethod.POST)
+    public ResponseVO<?> mergeFile(ChunkVO chunk) throws ApplicationException {
+        return ResponseVO.okWithData(storageService.mergeFile4Temp(chunk));
     }
 
     @RequestMapping("/download")

@@ -35,7 +35,7 @@ public interface ResourceCode {
         } else if (audios.contains(suffixName)) {
             return AUDIO;
         } else {
-            return "";
+            return "other";
         }
     }
 }

@@ -19,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -51,10 +50,10 @@ public class StorageServiceImpl implements IStorageService {
 
         Integer chunkNumber = chunk.getChunkNumber();
         if (chunkNumber == null) {
-            chunkNumber = 1;
+            chunkNumber = 0;
         }
 
-        File outFile = new File(rootFilePathTemp + File.separator + chunk.getIdentifier(), chunkNumber + ".part");
+        File outFile = new File(rootFilePathTemp + File.separator + chunk.getFileName(), chunkNumber + ".part");
 
         try {
             InputStream inputStream = file.getInputStream();
@@ -66,26 +65,60 @@ public class StorageServiceImpl implements IStorageService {
     }
 
     @Override
-    public void mergeFile4Temp(String filename, String guid) throws ApplicationException {
+    public FileVO mergeFile4Temp(ChunkVO chunk) throws ApplicationException {
+        String suffixName = getSuffixName(chunk.getFileName());
+        final String resourceCode = ResourceCode.getResourceCode(suffixName);
+        String newFileName = System.currentTimeMillis()+SymbolCode.DOT+suffixName;
+        final String basePath = buildBasePath(resourceCode, newFileName);
+        Long size = 0L;
         try {
-            File file = new File(rootFilePathTemp + File.separator + guid);
+            File file = new File(rootFilePathTemp + File.separator + chunk.getFileName());
             if (file.isDirectory()) {
                 File[] files = file.listFiles();
                 if (files != null && files.length > 0) {
-                    File partFile = new File(rootFilePath + File.separator + filename);
-                    for (int i = 1; i <= files.length; i++) {
-                        File s = new File(rootFilePathTemp + File.separator + guid, i + ".part");
+                    File partFile = new File(rootFilePath + basePath);
+                    // 创建文件夹
+                    if (!partFile.getParentFile().exists()) {
+                        partFile.getParentFile().mkdirs();
+                    }
+                    for (int i = 0; i < files.length; i++) {
+                        File s = new File(rootFilePathTemp + File.separator + chunk.getFileName(), i + ".part");
                         FileOutputStream destTempfos = new FileOutputStream(partFile, true);
                         FileUtils.copyFile(s, destTempfos);
                         destTempfos.close();
                     }
                     FileUtils.deleteDirectory(file);
+                    size = partFile.length();
                 }
             }
         } catch (IOException e) {
             LOGGER.error("合并临时文件出错", e);
             throw new SmartApplicationException(SmartCode.Storage.INTERNAL_ERROR, "服务器出错");
         }
+        // 写入数据库
+        final FileVO fileVO = new FileVO();
+        fileVO.setName(chunk.getFileName());
+        fileVO.setSuffixName(suffixName);
+        fileVO.setOwner(0L);
+        fileVO.setResourceCode(resourceCode);
+        fileVO.setPath(basePath);
+        fileVO.setSize(size);
+        fileVO.setHashCode("");
+        fileVO.setAvailable(1);
+        fileVO.setCreatedBy(0L);
+        fileVO.setCreationDate(new Date());
+        fileVO.setLastUpdatedBy(0L);
+        fileVO.setLastUpdatedDate(new Date());
+        fileDao.createFile(fileVO);
+        return fileVO;
+    }
+
+    private String buildBasePath(String resourceCode, String newFileName) {
+        return File.separator + resourceCode + File.separator + newFileName;
+    }
+
+    private String getSuffixName(String fileName) {
+        return fileName.substring(fileName.lastIndexOf(".")+1);
     }
 
     @Override
@@ -117,14 +150,11 @@ public class StorageServiceImpl implements IStorageService {
                 final String suffixName = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
                 final String resourceCode = ResourceCode.getResourceCode(suffixName);
                 final String relativePath = generateRelativePath(suffixName, resourceCode);
-                File filePath = new File(ResourceUtils.getURL("classpath:").getPath());
-                // File upload = new File(filePath.getAbsolutePath(), "static/tmpupload/");
-                String path = filePath.getAbsolutePath() + "/static" + relativePath;
-                final File file = new File(path);
+                final File file = new File(rootFilePath, relativePath);
                 if (!file.getParentFile().exists()) {
                     file.getParentFile().mkdirs();
                 }
-                multipartFile.transferTo(new File(path));
+                multipartFile.transferTo(file);
                 fileVO = new FileVO();
                 fileVO.setName(originalFilename);
                 fileVO.setHashCode(hash);
@@ -132,7 +162,7 @@ public class StorageServiceImpl implements IStorageService {
                 fileVO.setResourceCode(resourceCode);
                 fileVO.setOwner(user.getId());
                 fileVO.setSuffixName(suffixName);
-                fileVO.setSize(Integer.parseInt(multipartFile.getSize() + ""));
+                fileVO.setSize(Long.parseLong(multipartFile.getSize() + ""));
                 fileVO.setAvailable(1);
                 fileVO.setCreatedBy(user.getId());
                 fileVO.setCreationDate(new Date());
@@ -144,11 +174,6 @@ public class StorageServiceImpl implements IStorageService {
         } catch (SmartApplicationException | IOException e) {
             throw new SmartApplicationException(SmartCode.Storage.INTERNAL_ERROR, e.getMessage());
         }
-
-
-        // final FileVO fileVO = new FileVO();
-        // fileVO.setName(originalFilename);
-
     }
 
     private String generateRelativePath(String suffixName, String resourceCode) {
