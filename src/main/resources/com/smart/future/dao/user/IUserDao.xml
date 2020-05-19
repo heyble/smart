@@ -32,7 +32,7 @@
     </resultMap>
 
     <insert id="insertUser" parameterType="com.smart.future.user.vo.UserVO" useGeneratedKeys="true" keyProperty="userVO.id" keyColumn="id">
-            INSERT INTO S_USER_T( phone_id, `name`, password, signature, avatar, e_mail, birthday, available, created_by, creation_date, last_updated_by, last_updated_date)
+            INSERT INTO s_user_t( phone_id, `name`, password, signature, avatar, e_mail, birthday, available, created_by, creation_date, last_updated_by, last_updated_date)
         VALUES
             (
             #{userVO.phoneId},
@@ -93,15 +93,15 @@
     </update>
 
     <select id="findAll" resultMap="userMap">
-        select * from S_USER_T;
+        select * from s_user_t;
     </select>
 
     <select id="findById" resultMap="userMap">
-        SELECT * FROM S_USER_T T WHERE T.AVAILABLE = 1 AND T.ID = #{id}
+        SELECT * FROM s_user_t T WHERE T.AVAILABLE = 1 AND T.ID = #{id}
     </select>
 
     <select id="getMaxId" resultType="java.lang.Long">
-        SELECT max(id) FROM S_USER_T
+        SELECT max(id) FROM s_user_t
     </select>
 
     <select id="findByPhoneId" resultMap="userMap">
@@ -117,7 +117,7 @@
           r.`last_updated_by`,
           r.`last_updated_date`
         FROM
-          S_USER_T u
+          s_user_t u
           INNER JOIN s_user_role_t rt
             ON u.`id` = rt.`user_id`
             AND rt.`available` = 1

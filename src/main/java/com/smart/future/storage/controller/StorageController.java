@@ -28,7 +28,7 @@ import java.io.RandomAccessFile;
 
 @RestController
 @RequestMapping("/storage")
-@CrossOrigin(origins = "http://localhost:8080")
+@CrossOrigin(origins = "*")
 public class StorageController {
 
     @Autowired
